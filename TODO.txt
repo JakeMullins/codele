@@ -1,0 +1,3 @@
+Data for each row is held in a string, parse the string every time it reloads
+
+Align button correctly

@@ -1,14 +1,15 @@
 <template>
   <div class="guess">
+    {{ currSelected }}
     <div class="row" v-for="row in rows" :key="row">
       <div class="function">
-        <div class="function-tile"></div>
+        {{ functionString }}
       </div>
       <div class="argument">
-        <div class="argument-tile"></div>
+        {{ arg1 }}
       </div>
       <div class="argument">
-        <div class="argument-tile"></div>
+        {{ arg2 }}
       </div>
     </div>
     <hr />
@@ -18,15 +19,19 @@
 <script>
 export default {
   name: "GameRow",
-  el: "#guess",
   data: () => {
     return {
       rows: [1, 2, 3, 4, 5],
     };
   },
   props: {
-    yellow: String,
-    green: Array,
+    correct: Object,
+    row1: String,
+    row2: String,
+    row3: String,
+    row4: String,
+    row5: String,
+    currSelected: Number,
   },
 };
 </script>
@@ -49,6 +54,7 @@ p {
   height: 100px;
   background-color: #2b2b2b;
   margin: 5px;
+  font-size: 75px;
 }
 
 .argument {
@@ -57,5 +63,6 @@ p {
   height: 100px;
   background-color: #2b2b2b;
   margin: 5px;
+  font-size: 75px;
 }
 </style>
