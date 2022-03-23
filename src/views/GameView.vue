@@ -8,9 +8,11 @@
         <div id="board" style="width: 700px; height: 420px">
           <!--Dynamically assign row strings based on keyboard inputs-->
           <GameRow
+            :rowId="1"
             v-bind:correct="currExpression"
             v-bind:input="input"
             @fieldSelected="changeSelected($event)"
+            @guessSubmitted="guessSubmitted()"
           />
         </div>
       </div>
@@ -25,14 +27,36 @@ export default {
   name: "GameView",
   data: function () {
     return {
+      rows: [1, 2, 3, 4, 5],
       currExpression: {
-        a: "2",
-        b: "3",
-        0: "print a 1",
-        1: "add a 4",
-        2: "subtract b 5",
-        3: "assign b 5",
-        4: "print b 3",
+        x: "2",
+        y: "3",
+        z: "4",
+        1: {
+          functionString: "print",
+          arg1: "1",
+          arg2: "2",
+        },
+        2: {
+          functionString: "",
+          arg1: "x",
+          arg2: "2",
+        },
+        3: {
+          functionString: "subtract",
+          arg1: "y",
+          arg2: "5",
+        },
+        4: {
+          functionString: "",
+          arg1: "",
+          arg2: "",
+        },
+        5: {
+          functionString: "set",
+          arg1: "x",
+          arg2: "2",
+        },
         result: "2 5 5 5",
       },
       input: {
@@ -61,8 +85,36 @@ export default {
           arg1: "x",
           arg2: "2",
         },
-        currSelected: -1,
+        currSelectedField: -1,
+        currSelectedRow: 1,
       },
+      fieldStates: {
+        1: {
+          func: "function-unselected",
+          arg1: "argument-unselected",
+          arg2: "argument-unselected"
+        },
+        2: {
+          func: "function-unselected",
+          arg1: "argument-unselected",
+          arg2: "argument-unselected"
+        },
+        3: {
+          func: "function-unselected",
+          arg1: "argument-unselected",
+          arg2: "argument-unselected"
+        },
+        4: {
+          func: "function-unselected",
+          arg1: "argument-unselected",
+          arg2: "argument-unselected"
+        },
+        5: {
+          func: "function-unselected",
+          arg1: "argument-unselected",
+          arg2: "argument-unselected"
+        } ,
+      }
     };
   },
   components: {
@@ -75,7 +127,7 @@ export default {
       // Or if backspace
       if (
         e.key.toLowerCase() != e.key.toUpperCase() &&
-        (e.key.length == 1 || e.key == "Backspace") 
+        (e.key.length == 1 || e.key == "Backspace")
       ) {
         this.appendToEntry(e.key);
       }
@@ -84,11 +136,11 @@ export default {
   methods: {
     // Called when a field is clicked
     changeSelected(data) {
-      this.input.currSelected = data;
+      this.input.currSelectedField = data;
     },
     appendToEntry(input) {
       // Could possibly parse currSelected string to get correct
-      let selected = this.$data.input.currSelected;
+      let selected = this.$data.input.currSelectedField;
       let arr = selected.split("-");
 
       let func = this.$data.input[arr[0]].functionString;
@@ -121,13 +173,37 @@ export default {
           this.$data.input[arr[0]].arg2 += input;
         }
       }
-
-      console.log(func, arg1, arg2);
-
-      //      console.log(this.$data.input[arr[0]]);
       // Add character to entry
       // If backspace, delete one character
     },
+    guessSubmitted() {
+      // Reset selection and advance rows
+      this.input.currSelectedRow++;
+      this.input.currSelectedField = -1;
+      this.checkGuess();
+    },
+    checkGuess() {
+      let guessRows = [1, 2, 3, 4, 5];
+      guessRows.forEach((row) => {
+        this.checkFunction(row, this.input[row].functionString);
+        this.checkArg1(row, this.input[row].arg1);
+        this.checkArg2(row, this.input[row].arg2);
+      });
+
+      // For each guessRow
+      // Check function and assign color
+      // Check arg1 and assign color
+      // Check arg2 and assign color
+    },
+    checkFunction(row, string) {
+      console.log(row, string);
+    },
+    checkArg1(row, string) {
+      console.log(row, string);
+    },
+    checkArg2(row, string) {
+      console.log(row, string);
+    }
   },
 };
 </script>

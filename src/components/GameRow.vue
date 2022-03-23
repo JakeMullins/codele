@@ -48,14 +48,14 @@
       <div v-bind:class="[this.currentId==='5-function'?'function-selected':'function-unselected']" id="5-function" @click="fieldSelect('5-function')">
         {{ input[5].functionString }}
       </div>
-      <div v-bind:class="[(this.currentId === '5-arg1') ? 'argument-selected' : 'argument-unselected' ]" id="5-arg1" @click="fieldSelect('5-arg1')">
+      <div v-bind:class="[this.currentId==='5-arg1'?'function-selected':'function-unselected']" id="5-arg1" @click="fieldSelect('5-arg1')">
         {{ input[5].arg1 }}
       </div>
-      <div v-bind:class="[(this.currentId === '5-arg2') ? 'argument-selected' : 'argument-unselected' ]" id="5-arg2" @click="fieldSelect('5-arg2')">
+      <div v-bind:class="[this.currentId==='5-arg2'?'function-selected':'function-unselected']" id="5-arg2" @click="fieldSelect('5-arg2')">
         {{ input[5].arg2 }}
       </div>
     </div>
-    <button @click="printId">print id</button>
+    <button @click="submitGuess()">Submit Guess</button>
   </div>
 </template>
 
@@ -66,6 +66,9 @@ export default {
   props: {
     correct: Object,
     input: Object,
+    isCurrentRow: Boolean,
+    rowId: Number,
+    fieldStates: Object,
   },
   methods: {
     // Sets current ID = 
@@ -73,10 +76,9 @@ export default {
       this.currentId = input;
       this.$emit('fieldSelected', input);
     },
-    printId(){
-      console.log(this.currentId);
+    submitGuess() {
+      this.$emit('guessSubmitted');
     },
-
   }, 
   data: function() {
     return {
