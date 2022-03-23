@@ -1,38 +1,109 @@
 <template>
   <div class="guess">
-    {{ currSelected }}
-    <div class="row" v-for="row in rows" :key="row">
-      <div class="function">
-        {{ functionString }}
+    <div class="row" id="row1">
+      <div v-bind:class="[this.currentId==='1-function'?'function-selected':'function-unselected']" id="1-function" @click="fieldSelect('1-function')">
+        {{ input[1].functionString }}
       </div>
-      <div class="argument">
-        {{ arg1 }}
+      <div v-bind:class="[ (this.currentId === '1-arg1') ? 'argument-selected' : 'argument-unselected' ]" id="1-arg1" @click="fieldSelect('1-arg1')">
+        {{ input[1].arg1 }}
       </div>
-      <div class="argument">
-        {{ arg2 }}
+      <div v-bind:class="[ (this.currentId === '1-arg2') ? 'argument-selected' : 'argument-unselected' ]" id="1-arg2" @click="fieldSelect('1-arg2')">
+        {{ input[1].arg2 }}
       </div>
     </div>
-    <hr />
+    <div class="row" id="row2">
+      <div v-bind:class="[this.currentId==='2-function'?'function-selected':'function-unselected']" id="2-function" @click="fieldSelect('2-function')">
+        {{ input[2].functionString }}
+      </div>
+      <div v-bind:class="[ (this.currentId === '2-arg1') ? 'argument-selected' : 'argument-unselected' ]" id="2-arg1" @click="fieldSelect('2-arg1')">
+        {{ input[2].arg1 }}
+      </div>
+      <div v-bind:class="[ (this.currentId === '2-arg2') ? 'argument-selected' : 'argument-unselected' ]" id="2-arg2" @click="fieldSelect('2-arg2')">
+        {{ input[2].arg2 }}
+      </div>
+    </div>
+    <div class="row" id="row3">
+      <div v-bind:class="[this.currentId==='3-function'?'function-selected':'function-unselected']" id="3-function" @click="fieldSelect('3-function')">
+        {{ input[3].functionString }}
+      </div>
+      <div v-bind:class="[ (this.currentId === '3-arg1') ? 'argument-selected' : 'argument-unselected' ]" id="3-arg1" @click="fieldSelect('3-arg1')">
+        {{ input[3].arg1 }}
+      </div>
+      <div v-bind:class="[ (this.currentId === '3-arg2') ? 'argument-selected' : 'argument-unselected' ]" id="3-arg2" @click="fieldSelect('3-arg2')">
+        {{ input[3].arg2 }}
+      </div>
+    </div>
+    <div class="row" id="row4">
+      <div v-bind:class="[this.currentId==='4-function'?'function-selected':'function-unselected']" id="4-function" @click="fieldSelect('4-function')">
+        {{ input[4].functionString }}
+      </div>
+      <div v-bind:class="[this.currentId === '4-arg1' ? 'argument-selected' : 'argument-unselected' ]" id="4-arg1" @click="fieldSelect('4-arg1')">
+        {{ input[4].arg1 }}
+      </div>
+      <div v-bind:class="[ this.currentId === '4-arg2' ? 'argument-selected' : 'argument-unselected' ]" id="4-arg2" @click="fieldSelect('4-arg2')">
+        {{ input[4].arg2 }}
+      </div>
+    </div>
+    <div class="row" id="row5">
+      <div v-bind:class="[this.currentId==='5-function'?'function-selected':'function-unselected']" id="5-function" @click="fieldSelect('5-function')">
+        {{ input[5].functionString }}
+      </div>
+      <div v-bind:class="[(this.currentId === '5-arg1') ? 'argument-selected' : 'argument-unselected' ]" id="5-arg1" @click="fieldSelect('5-arg1')">
+        {{ input[5].arg1 }}
+      </div>
+      <div v-bind:class="[(this.currentId === '5-arg2') ? 'argument-selected' : 'argument-unselected' ]" id="5-arg2" @click="fieldSelect('5-arg2')">
+        {{ input[5].arg2 }}
+      </div>
+    </div>
+    <button @click="printId">print id</button>
   </div>
 </template>
 
 <script>
 export default {
   name: "GameRow",
-  data: () => {
-    return {
-      rows: [1, 2, 3, 4, 5],
-    };
-  },
+  // Put data here
   props: {
     correct: Object,
-    row1: String,
-    row2: String,
-    row3: String,
-    row4: String,
-    row5: String,
-    currSelected: Number,
+    input: Object,
   },
+  methods: {
+    // Sets current ID = 
+    fieldSelect(input) {
+      this.currentId = input;
+      this.$emit('fieldSelected', input);
+    },
+    printId(){
+      console.log(this.currentId);
+    },
+
+  }, 
+  data: function() {
+    return {
+      currentId: "No field selected",
+      fieldIDs: [
+        "1-function", "1-arg1", "1-arg2",
+        "2-function", "2-arg1", "2-arg2",
+        "3-function", "3-arg1", "3-arg2",
+        "4-function", "4-arg1", "4-arg2",
+        "5-function", "5-arg1", "5-arg2",
+      ],
+      functionIDs: [
+        "1-function",
+        "2-function",
+        "3-function",
+        "4-function",
+        "5-function",
+      ],
+      argumentIDs: [
+        "1-arg1", "1-arg2",
+        "2-arg1", "2-arg2",
+        "3-arg1", "3-arg2",
+        "4-arg1", "4-arg2",
+        "5-arg1", "5-arg2",
+      ]
+    }
+  }
 };
 </script>
 
@@ -43,26 +114,52 @@ p {
 }
 
 .row {
-  grid-template-rows: repeat(6, 1fr);
   box-sizing: border-box;
   text-align: center;
+  vertical-align: center;
 }
 
-.function {
+.function-unselected {
   display: inline-block;
   width: 300px;
   height: 100px;
   background-color: #2b2b2b;
+  color: #fff;
   margin: 5px;
   font-size: 75px;
+  vertical-align: middle;
 }
 
-.argument {
+.function-selected {
+  display: inline-block;
+  width: 300px;
+  height: 100px;
+  background-color: #fff;
+  color: #2b2b2b;
+  margin: 5px;
+  font-size: 75px;
+  vertical-align: middle;
+}
+
+.argument-unselected {
   display: inline-block;
   width: 100px;
   height: 100px;
   background-color: #2b2b2b;
+  color: #fff;
   margin: 5px;
   font-size: 75px;
+  vertical-align: middle;
+}
+
+.argument-selected{
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  background-color: #fff;
+  color: #2b2b2b;
+  margin: 5px;
+  font-size: 75px;
+  vertical-align: middle;
 }
 </style>

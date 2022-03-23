@@ -1,3 +1,10 @@
-Data for each row is held in a string, parse the string every time it reloads
+Functionality
+Add number to string
+Guess finished flag
+Compare text to correct output
+Control backspace to delete whole string
 
+CSS/Prettiness
 Align button correctly
+Align unfilled boxes with filled boxes
+Left justify function text
