@@ -11,7 +11,8 @@
             :rowId="1"
             v-bind:correct="currExpression"
             v-bind:input="input"
-            @fieldSelected="changeSelected($event)"
+            v-bind:fieldStates="fieldStates"
+            @fieldSelected="changeSelected($event, data)"
             @guessSubmitted="guessSubmitted()"
           />
         </div>
@@ -90,39 +91,41 @@ export default {
       },
       fieldStates: {
         1: {
-          func: "function-unselected",
+          function: "function-unselected",
           arg1: "argument-unselected",
           arg2: "argument-unselected"
         },
         2: {
-          func: "function-unselected",
+          function: "function-unselected",
           arg1: "argument-unselected",
           arg2: "argument-unselected"
         },
         3: {
-          func: "function-unselected",
+          function: "function-unselected",
           arg1: "argument-unselected",
           arg2: "argument-unselected"
         },
         4: {
-          func: "function-unselected",
+          function: "function-unselected",
           arg1: "argument-unselected",
           arg2: "argument-unselected"
         },
         5: {
-          func: "function-unselected",
+          function: "function-unselected",
           arg1: "argument-unselected",
           arg2: "argument-unselected"
         } ,
-      }
+      },
     };
   },
   components: {
     GameRow,
   },
-  // Key down event handler
+  // Key down event handler 
   created() {
     window.addEventListener("keydown", (e) => {
+      // Add possible unselected short circuit
+
       // If letter
       // Or if backspace
       if (
@@ -131,12 +134,28 @@ export default {
       ) {
         this.appendToEntry(e.key);
       }
+      // If number 
+      if(!isNaN(e.key)) {
+        this.appendToEntry(e.key);
+      }
     });
   },
   methods: {
     // Called when a field is clicked
-    changeSelected(data) {
-      this.input.currSelectedField = data;
+    changeSelected(field) {
+      this.input.currSelectedField = field;
+      let arr = this.input.currSelectedField.split('-');
+      let className = "";
+      if(arr[1] == "function") {
+        className = "function-selected";
+      }
+      if(arr[1] == "argument") {
+        className ="argument-selected";
+      }
+
+      // Iterate through all fieldStates and change to function/argument-unselected
+
+      this.fieldStates[arr[0]][arr[1]] = className;
     },
     appendToEntry(input) {
       // Could possibly parse currSelected string to get correct
@@ -194,10 +213,25 @@ export default {
       // Check function and assign color
       // Check arg1 and assign color
       // Check arg2 and assign color
+
+      // Unselect box
     },
-    checkFunction(row, string) {
-      console.log(row, string);
-    },
+    checkFunction(row, inputString) {
+      
+      // Check if inputString is same as correct
+      if(this.currExpression[row].function == inputString) {
+        // Change this.fieldStates[row].function = "function-correct"
+        this.fieldStates[row].func = "function-correct";
+      }
+      // Check if inputString is in correct, but NOT in the same spot
+        // Change this.fieldStates[row].function = "function-different-spot"
+      // Check if inputString is not a valid entry
+        // Change this.fieldStates[row].function = "function-invalid-syntax"
+      // Check if valid syntax but not in correct
+        // Change this.fieldStates[row].function = "function-unselected"
+
+      console.log(row, inputString);
+},
     checkArg1(row, string) {
       console.log(row, string);
     },

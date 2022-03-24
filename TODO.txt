@@ -1,8 +1,16 @@
 Functionality
-Add number to string
-Guess finished flag
+Select and unselect boxes using new selection
+	Bind states to selection
+Handle logic for 
+	Correct guess correct spot (Green)
+	Correct guess incorrect spot (Yellow)
+	Invalid Syntax (Red/orange/blood orange)
 Compare text to correct output
 Control backspace to delete whole string
+
+Hotfixes
+	Get rid of weird error in console when selecting a box 
+
 
 CSS/Prettiness
 Align button correctly
