@@ -1,18 +1,15 @@
 Functionality
-Select and unselect boxes using new selection
-	Bind states to selection
-Handle logic for 
-	Correct guess correct spot (Green)
-	Correct guess incorrect spot (Yellow)
-	Invalid Syntax (Red/orange/blood orange)
-Compare text to correct output
+Multiple rows
+	Only able to edit/select current row
+	Submit advances to next row
 Control backspace to delete whole string
 
 Hotfixes
-	Get rid of weird error in console when selecting a box 
-
+	Get rid of weird error in console when selecting a box
 
 CSS/Prettiness
-Align button correctly
-Align unfilled boxes with filled boxes
 Left justify function text
+Make button pretty
+Have initial conditions and goals
+
+Make multiple tests
