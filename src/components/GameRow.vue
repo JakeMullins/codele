@@ -2,16 +2,16 @@
   <div class="guess">
     <div class="initialConditions">
       <div class="initialCondition" id="cond1">
-        <h1 class="label">a:</h1>
-        <div class="initialValue">1</div>
+        <h1 class="label">x:</h1>
+        <div class="initialValue">{{ correct.x }}</div>
       </div>
       <div class="initialCondition" id="cond2">
-        <h1 class="label">b:</h1>
-        <div class="initialValue">2</div>
+        <h1 class="label">y:</h1>
+        <div class="initialValue">{{ correct.y }}</div>
       </div>
       <div class="initialCondition" id="cond3">
-        <h1 class="label">c:</h1>
-        <div class="initialValue">3</div>
+        <h1 class="label">z:</h1>
+        <div class="initialValue">{{ correct.z }}</div>
       </div>
     </div>
     <div class="row" id="row1">
@@ -132,7 +132,8 @@
       <button class="button-unpressed" id="button" @click="submitGuess()">
         Submit
       </button>
-     <div class="result">11 4444 222</div>
+     <div class="result" id="user">{{ interpretedString }}</div>
+     <div class="result" id="answer">{{ correct.result }}</div>
      <hr>
     </div>
   </div>
@@ -146,6 +147,7 @@ export default {
     correct: Object,
     input: Object,
     rowId: Number,
+    interpretedString: String,
     fieldStates: Object
   },
   methods: {

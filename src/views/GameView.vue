@@ -8,14 +8,15 @@
         <div id="documentation"></div>
         <div id="board" style="width: 700px; height: 420px">
           <!--Dynamically assign row strings based on keyboard inputs-->
-            <GameRow
-              :rowId="1"
-              v-bind:correct="currExpression"
-              v-bind:input="input"
-              v-bind:fieldStates="fieldStates"
-              @fieldSelected="changeSelected($event)"
-              @guessSubmitted="guessSubmitted(1)"
-            />
+          <GameRow
+            :rowId="1"
+            v-bind:correct="currExpression"
+            v-bind:input="input"
+            v-bind:fieldStates="fieldStates"
+            v-bind:interpretedString="result"
+            @fieldSelected="changeSelected($event)"
+            @guessSubmitted="guessSubmitted(1)"
+          />
         </div>
       </div>
     </div>
@@ -31,65 +32,68 @@ export default {
     return {
       rows: [1, 2, 3, 4, 5],
       currExpression: {
-        x: "2",
-        y: "3",
-        z: "4",
+        x: 2,
+        y: 3,
+        z: 4,
         // List of all possible entries in each column
         functionList: ["print", "add", "subtract", "set"],
         arg1List: ["1", "x", "y"],
         arg2List: ["2", "5", "4"],
         1: {
           functionString: "print",
-          arg1: "1",
-          arg2: "2"
+          arg1: "x",
+          arg2: 2
         },
         2: {
           functionString: "add",
           arg1: "x",
-          arg2: "2"
+          arg2: "z"
         },
         3: {
           functionString: "subtract",
           arg1: "y",
-          arg2: "5"
+          arg2: 2
         },
         4: {
           functionString: "set",
           arg1: "x",
-          arg2: "3"
+          arg2: 3
         },
         5: {
-          functionString: "set",
-          arg1: "x",
-          arg2: "2"
+          functionString: "print",
+          arg1: "y",
+          arg2: 2
         },
-        result: "2 5 5 5"
+        result: "2 555"
       },
       input: {
+        x: 2,
+        y: 3,
+        z: 4,
         1: {
-          functionString: "set",
-          arg1: "1",
-          arg2: "5"
+          functionString: "print",
+          arg1: "x",
+          arg2: 2
         },
         2: {
-          functionString: "",
+          functionString: "add",
           arg1: "x",
-          arg2: "2"
+          arg2: "z"
         },
         3: {
           functionString: "subtract",
           arg1: "y",
-          arg2: "5"
+          arg2: 2
         },
         4: {
-          functionString: "",
-          arg1: "",
-          arg2: ""
-        },
-        5: {
           functionString: "set",
           arg1: "x",
-          arg2: "2"
+          arg2: 3
+        },
+        5: {
+          functionString: "print",
+          arg1: "y",
+          arg2: 2
         },
         currSelectedField: -1,
         currSelectedRow: 1
@@ -177,7 +181,8 @@ export default {
         "13",
         "14",
         "15"
-      ]
+      ],
+      result: ""
     };
   },
   components: {
@@ -269,12 +274,14 @@ export default {
       // If backspace, delete one character
     },
     guessSubmitted(id) {
-      if (id === this.input.currSelectedRow) {
-        // Reset selection and advance rows
+      if (id) {
         this.input.currSelectedRow++;
-        this.input.currSelectedField = -1;
-        this.checkGuess();
       }
+
+      //      if (id === this.input.currSelectedRow) {
+      // Reset selection and advance rows
+      this.input.currSelectedField = -1;
+      this.checkGuess();
     },
     checkGuess() {
       this.changeAllFieldsUnselected();
@@ -289,7 +296,7 @@ export default {
       });
 
       // Run interpreter
-      this.interpret();
+      this.result = this.interpret();
     },
     checkFunction(row, inputString) {
       // Gray
@@ -379,14 +386,68 @@ export default {
         }
       }
     },
+    // Called in checkGuess
     interpret() {
       let result = "";
 
-//      this.rows.forEach((row) => {
-//        if(this.$data.input[row].functionString == "print"){
-//          console.log(row)
-//        }
-//      });
+      this.rows.forEach((row) => {
+        // let arg1 = this.input[row].arg1;
+        let arg2 = this.input[row].arg2;
+        // let func = this.input[row].functionString;
+
+        // let arg1IsNumber = arg1 == "x" || arg1 == "y" || arg1 == "z";
+        let arg2IsNumber = arg2 == "x" || arg2 == "y" || arg2 == "z";
+
+        // 'Execute' each function
+        switch (this.input[row].functionString) {
+          case "print":
+            for (let i = 0; i < this.input[row].arg2; i++) {
+              // Append to result
+              result += this.input[this.input[row].arg1];
+            }
+            result += " ";
+            break;
+          case "add":
+            if (arg2IsNumber) {
+              this.input[this.input[row].arg1] +=
+                this.input[this.input[row].arg2];
+            } else {
+              this.input[this.input[row].arg1] += this.input[row].arg2;
+            }
+            break;
+          case "subtract":
+            if (arg2IsNumber) {
+              this.input[this.input[row].arg1] -=
+                this.input[this.input[row].arg2];
+            } else {
+              this.input[this.input[row].arg1] -= this.input[row].arg2;
+            }
+            break;
+          case "multiply":
+            if (arg2IsNumber) {
+              this.input[this.input[row].arg1] *=
+                this.input[this.input[row].arg2];
+            } else {
+              this.input[this.input[row].arg1] *= this.input[row].arg2;
+            }
+            break;
+          case "divide":
+            if (arg2IsNumber) {
+              this.input[this.input[row].arg1] /=
+                this.input[this.input[row].arg2];
+            } else {
+              this.input[this.input[row].arg1] /= this.input[row].arg2;
+            }
+            break;
+          case "set":
+            this.input[this.input[row].arg1] = this.input[row].arg2;
+            break;
+          default:
+            console.log("default");
+        }
+
+        console.log(this.input["x"], this.input["y"], this.input["z"]);
+      });
 
       return result;
     }

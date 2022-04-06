@@ -3,13 +3,6 @@ Multiple rows
 	Only able to edit/select current row
 	Submit advances to next row
 Control backspace to delete whole string
-
-Hotfixes
-	Get rid of weird error in console when selecting a box
-
-CSS/Prettiness
-Left justify function text
-Make button pretty
-Have initial conditions and goals
+Interpreter
 
 Make multiple tests
