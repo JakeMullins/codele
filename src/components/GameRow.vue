@@ -133,6 +133,7 @@
         Submit
       </button>
      <div class="result">11 4444 222</div>
+     <hr>
     </div>
   </div>
 </template>
@@ -152,7 +153,7 @@ export default {
     fieldSelect(field) {
       if (this.$props.rowId == this.$props.input.currSelectedRow) {
         this.currentId = field;
-        // Emit the row and whether it is a func or 1 of 2 arge
+        // Emit the row and whether it is a func or 1 of 2 arg
         this.$emit("fieldSelected", this.currentId);
       }
     },

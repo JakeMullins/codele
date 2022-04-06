@@ -8,46 +8,14 @@
         <div id="documentation"></div>
         <div id="board" style="width: 700px; height: 420px">
           <!--Dynamically assign row strings based on keyboard inputs-->
-          <div v-if="this.$data.input.currSelectedRow >= 1">
-            <GameRow
-              :rowId="1"
-              v-bind:correct="currExpression"
-              v-bind:input="input"
-              v-bind:fieldStates="defaultStates"
-              @fieldSelected="changeSelected($event, data)"
-              @guessSubmitted="guessSubmitted(1)"
-            />
-          </div>
-          <div v-else>
             <GameRow
               :rowId="1"
               v-bind:correct="currExpression"
               v-bind:input="input"
               v-bind:fieldStates="fieldStates"
-              @fieldSelected="changeSelected($event, data)"
+              @fieldSelected="changeSelected($event)"
               @guessSubmitted="guessSubmitted(1)"
             />
-            </div>
-          <div v-if="this.$data.input.currSelectedRow >= 2">
-            <GameRow
-              :rowId="2"
-              v-bind:correct="currExpression"
-              v-bind:input="input"
-              v-bind:fieldStates="fieldStates"
-              @fieldSelected="changeSelected($event, data)"
-              @guessSubmitted="guessSubmitted(2)"
-            />
-          </div>
-          <div v-if="this.$data.input.currSelectedRow >= 3">
-            <GameRow
-              :rowId="3"
-              v-bind:correct="currExpression"
-              v-bind:input="input"
-              v-bind:fieldStates="fieldStates"
-              @fieldSelected="changeSelected($event, data)"
-              @guessSubmitted="guessSubmitted(3)"
-            />
-          </div>
         </div>
       </div>
     </div>
@@ -259,6 +227,8 @@ export default {
       }
 
       this.fieldStates[arr[0]][arr[1]] = className;
+
+      console.log(this.fieldStates[arr[0]][arr[1]]);
     },
     appendToEntry(input) {
       // Could possibly parse currSelected string to get correct
@@ -311,11 +281,15 @@ export default {
 
       let guessRows = [1, 2, 3, 4, 5];
 
+      // Change field colors
       guessRows.forEach((row) => {
         this.checkFunction(row, this.input[row].functionString);
         this.checkArg1(row, this.input[row].arg1);
         this.checkArg2(row, this.input[row].arg2);
       });
+
+      // Run interpreter
+      this.interpret();
     },
     checkFunction(row, inputString) {
       // Gray
@@ -404,6 +378,17 @@ export default {
           }
         }
       }
+    },
+    interpret() {
+      let result = "";
+
+//      this.rows.forEach((row) => {
+//        if(this.$data.input[row].functionString == "print"){
+//          console.log(row)
+//        }
+//      });
+
+      return result;
     }
   }
 };
