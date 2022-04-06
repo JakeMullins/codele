@@ -1,5 +1,6 @@
 <template>
   <div class="guess">
+    <button @click="testEvent()">Test some sick shid</button>
     <div class="initialConditions">
       <div class="initialCondition" id="cond1">
         <h1 class="label">x:</h1>
@@ -152,6 +153,9 @@ export default {
   },
   methods: {
     // Sets current ID =
+    testEvent() {
+      this.$emit("testEvent");
+    },
     fieldSelect(field) {
       if (this.$props.rowId == this.$props.input.currSelectedRow) {
         this.currentId = field;

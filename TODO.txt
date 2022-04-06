@@ -6,3 +6,5 @@ Control backspace to delete whole string
 Interpreter
 
 Make multiple tests
+
+Either dynamically change list of valid entries specifice to each expression or find some other mechanism that doesn't involve hardcoding

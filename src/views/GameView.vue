@@ -16,6 +16,7 @@
             v-bind:interpretedString="result"
             @fieldSelected="changeSelected($event)"
             @guessSubmitted="guessSubmitted(1)"
+            @testEvent="testEvent()"
           />
         </div>
       </div>
@@ -24,6 +25,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 import GameRow from "@/components/GameRow.vue";
 
 export default {
@@ -32,39 +35,7 @@ export default {
     return {
       rows: [1, 2, 3, 4, 5],
       currExpression: {
-        x: 2,
-        y: 3,
-        z: 4,
-        // List of all possible entries in each column
-        functionList: ["print", "add", "subtract", "set"],
-        arg1List: ["1", "x", "y"],
-        arg2List: ["2", "5", "4"],
-        1: {
-          functionString: "print",
-          arg1: "x",
-          arg2: 2
-        },
-        2: {
-          functionString: "add",
-          arg1: "x",
-          arg2: "z"
-        },
-        3: {
-          functionString: "subtract",
-          arg1: "y",
-          arg2: 2
-        },
-        4: {
-          functionString: "set",
-          arg1: "x",
-          arg2: 3
-        },
-        5: {
-          functionString: "print",
-          arg1: "y",
-          arg2: 2
-        },
-        result: "2 555"
+
       },
       input: {
         x: 2,
@@ -206,8 +177,24 @@ export default {
         this.appendToEntry(e.key);
       }
     });
+  
+    this.getExpression();
   },
   methods: {
+    async getExpression(){
+      try{
+        console.log("Attempting connection")
+        let response = await axios.get('http://localhost:3000/api/expression');
+        console.log(response);
+        this.currExpression = response.data;
+        return true;
+      } catch(e) {
+        console.log(e);
+      }
+    },
+    testEvent(){
+      console.log("test event");
+    },
     // Called when a field is clicked
     changeSelected(field) {
       this.input.currSelectedField = field;
@@ -274,12 +261,7 @@ export default {
       // If backspace, delete one character
     },
     guessSubmitted(id) {
-      if (id) {
-        this.input.currSelectedRow++;
-      }
-
-      //      if (id === this.input.currSelectedRow) {
-      // Reset selection and advance rows
+      this.input.currSelectedField = id;
       this.input.currSelectedField = -1;
       this.checkGuess();
     },
