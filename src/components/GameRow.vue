@@ -1,5 +1,19 @@
 <template>
   <div class="guess">
+    <div class="initialConditions">
+      <div class="initialCondition" id="cond1">
+        <h1 class="label">a:</h1>
+        <div class="initialValue">1</div>
+      </div>
+      <div class="initialCondition" id="cond2">
+        <h1 class="label">b:</h1>
+        <div class="initialValue">2</div>
+      </div>
+      <div class="initialCondition" id="cond3">
+        <h1 class="label">c:</h1>
+        <div class="initialValue">3</div>
+      </div>
+    </div>
     <div class="row" id="row1">
       <div
         v-bind:class="this.$props.fieldStates[1].function"
@@ -114,7 +128,12 @@
         {{ input[5].arg2 }}
       </div>
     </div>
-    <button class="button-unpressed" id="button" @click="submitGuess()">Submit</button>
+    <div class="end">
+      <button class="button-unpressed" id="button" @click="submitGuess()">
+        Submit
+      </button>
+     <div class="result">11 4444 222</div>
+    </div>
   </div>
 </template>
 
@@ -126,17 +145,19 @@ export default {
     correct: Object,
     input: Object,
     rowId: Number,
-    fieldStates: Object,
+    fieldStates: Object
   },
   methods: {
     // Sets current ID =
     fieldSelect(field) {
-      this.currentId = field;
-      // Emit the row and whether it is a func or 1 of 2 arge
-      this.$emit("fieldSelected", this.currentId);
+      if (this.$props.rowId == this.$props.input.currSelectedRow) {
+        this.currentId = field;
+        // Emit the row and whether it is a func or 1 of 2 arge
+        this.$emit("fieldSelected", this.currentId);
+      }
     },
     submitGuess() {
-      if(this.$props.input.currSelectedRow == this.$props.rowId){
+      if (this.$props.input.currSelectedRow == this.$props.rowId) {
         this.$emit("guessSubmitted");
       }
     }
@@ -179,7 +200,7 @@ export default {
         "4-arg2",
         "5-arg1",
         "5-arg2"
-      ],
+      ]
     };
   }
 };
@@ -193,7 +214,7 @@ p {
 
 .button-unpressed {
   display: inline-block;
-  width:280px;
+  width: 280px;
   height: 100px;
   background-color: #2b2b2b;
   color: #fff;
@@ -204,9 +225,39 @@ p {
 
 .button-pressed {
   display: inline-block;
-  width:280px;
+  width: 280px;
   height: 100px;
   background-color: #5b5b5b;
+  color: #fff;
+  margin: 5px;
+  font-size: 75px;
+  vertical-align: middle;
+}
+
+.initialConditions {
+  display: flex;
+  justify-content: center;
+  vertical-align: center;
+}
+
+.initialCondition {
+  display: flex;
+  justify-content: center;
+}
+
+.label {
+  display: inline-block;
+  color: #fff;
+  margin: 5px;
+  font-size: 75px;
+  vertical-align: middle;
+}
+
+.initialValue {
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  background-color: #2b2b2b;
   color: #fff;
   margin: 5px;
   font-size: 75px;
@@ -217,6 +268,21 @@ p {
   box-sizing: border-box;
   text-align: center;
   vertical-align: center;
+}
+
+.end {
+  display: box;
+}
+
+.result {
+  display: inline-block;
+  width: 520px;
+  height: 100px;
+  background-color: #2b2b2b;
+  color: #fff;
+  margin: 5px;
+  font-size: 75px;
+  vertical-align: middle; 
 }
 
 .function-unselected {

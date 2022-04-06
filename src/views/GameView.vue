@@ -8,30 +8,46 @@
         <div id="documentation"></div>
         <div id="board" style="width: 700px; height: 420px">
           <!--Dynamically assign row strings based on keyboard inputs-->
-          <GameRow
-            :rowId="1"
-            v-bind:correct="currExpression"
-            v-bind:input="input"
-            v-bind:fieldStates="fieldStates"
-            @fieldSelected="changeSelected($event, data)"
-            @guessSubmitted="guessSubmitted(1)"
-          />
-          <GameRow
-            :rowId="2"
-            v-bind:correct="currExpression"
-            v-bind:input="input"
-            v-bind:fieldStates="fieldStates"
-            @fieldSelected="changeSelected($event, data)"
-            @guessSubmitted="guessSubmitted(2)"
-          />
-          <GameRow
-            :rowId="3"
-            v-bind:correct="currExpression"
-            v-bind:input="input"
-            v-bind:fieldStates="fieldStates"
-            @fieldSelected="changeSelected($event, data)"
-            @guessSubmitted="guessSubmitted(3)"
-          />
+          <div v-if="this.$data.input.currSelectedRow >= 1">
+            <GameRow
+              :rowId="1"
+              v-bind:correct="currExpression"
+              v-bind:input="input"
+              v-bind:fieldStates="defaultStates"
+              @fieldSelected="changeSelected($event, data)"
+              @guessSubmitted="guessSubmitted(1)"
+            />
+          </div>
+          <div v-else>
+            <GameRow
+              :rowId="1"
+              v-bind:correct="currExpression"
+              v-bind:input="input"
+              v-bind:fieldStates="fieldStates"
+              @fieldSelected="changeSelected($event, data)"
+              @guessSubmitted="guessSubmitted(1)"
+            />
+            </div>
+          <div v-if="this.$data.input.currSelectedRow >= 2">
+            <GameRow
+              :rowId="2"
+              v-bind:correct="currExpression"
+              v-bind:input="input"
+              v-bind:fieldStates="fieldStates"
+              @fieldSelected="changeSelected($event, data)"
+              @guessSubmitted="guessSubmitted(2)"
+            />
+          </div>
+          <div v-if="this.$data.input.currSelectedRow >= 3">
+            <GameRow
+              :rowId="3"
+              v-bind:correct="currExpression"
+              v-bind:input="input"
+              v-bind:fieldStates="fieldStates"
+              @fieldSelected="changeSelected($event, data)"
+              @guessSubmitted="guessSubmitted(3)"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -109,6 +125,33 @@ export default {
         },
         currSelectedField: -1,
         currSelectedRow: 1
+      },
+      defaultStates: {
+        1: {
+          function: "function-unselected",
+          arg1: "argument-unselected",
+          arg2: "argument-unselected"
+        },
+        2: {
+          function: "function-unselected",
+          arg1: "argument-unselected",
+          arg2: "argument-unselected"
+        },
+        3: {
+          function: "function-unselected",
+          arg1: "argument-unselected",
+          arg2: "argument-unselected"
+        },
+        4: {
+          function: "function-unselected",
+          arg1: "argument-unselected",
+          arg2: "argument-unselected"
+        },
+        5: {
+          function: "function-unselected",
+          arg1: "argument-unselected",
+          arg2: "argument-unselected"
+        }
       },
       fieldStates: {
         1: {
