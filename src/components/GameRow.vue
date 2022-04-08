@@ -1,6 +1,5 @@
 <template>
   <div class="guess">
-    <button @click="testEvent()">Test some sick shid</button>
     <div class="initialConditions">
       <div class="initialCondition" id="cond1">
         <h1 class="label">x:</h1>
