@@ -16,7 +16,6 @@
             v-bind:interpretedString="result"
             @fieldSelected="changeSelected($event)"
             @guessSubmitted="guessSubmitted(1)"
-            @testEvent="testEvent()"
           />
         </div>
       </div>
@@ -35,7 +34,18 @@ export default {
     return {
       rows: [1, 2, 3, 4, 5],
       currExpression: {
-
+        '1': { functionString: 'print', arg1: 'x', arg2: 2 },
+        '2': { functionString: 'add', arg1: 'x', arg2: 'z' },
+        '3': { functionString: 'subtract', arg1: 'y', arg2: 2 },
+        '4': { functionString: 'set', arg1: 'x', arg2: 3 },
+        '5': { functionString: 'print', arg1: 'y', arg2: 2 },
+        x: 2,
+        y: 3,
+        z: 4,
+        functionList: [ 'print', 'add', 'subtract', 'set' ],
+        arg1List: [ '1', 'x', 'y' ],
+        arg2List: [ '2', '5', '4' ],
+        result: '2 555'
       },
       input: {
         x: 2,
@@ -192,9 +202,6 @@ export default {
         console.log(e);
       }
     },
-    testEvent(){
-      console.log("test event");
-    },
     // Called when a field is clicked
     changeSelected(field) {
       this.input.currSelectedField = field;
@@ -219,8 +226,6 @@ export default {
       }
 
       this.fieldStates[arr[0]][arr[1]] = className;
-
-      console.log(this.fieldStates[arr[0]][arr[1]]);
     },
     appendToEntry(input) {
       // Could possibly parse currSelected string to get correct
