@@ -17,6 +17,7 @@
             @fieldSelected="changeSelected($event)"
             @guessSubmitted="guessSubmitted(1)"
           />
+          <DocsPanel />
         </div>
       </div>
     </div>
@@ -27,6 +28,7 @@
 import axios from 'axios';
 
 import GameRow from "@/components/GameRow.vue";
+import DocsPanel from "@/components/DocsPanel.vue";
 
 export default {
   name: "GameView",
@@ -39,6 +41,7 @@ export default {
         '3': { functionString: 'subtract', arg1: 'y', arg2: 2 },
         '4': { functionString: 'set', arg1: 'x', arg2: 3 },
         '5': { functionString: 'print', arg1: 'y', arg2: 2 },
+        // dynamic vs static 
         x: 2,
         y: 3,
         z: 4,
@@ -48,33 +51,36 @@ export default {
         result: '2 555'
       },
       input: {
+        static_x: 2,
         x: 2,
+        static_y: 3,
         y: 3,
+        static_z: 4,
         z: 4,
         1: {
-          functionString: "print",
-          arg1: "x",
-          arg2: 2
+          functionString: "",
+          arg1: "",
+          arg2: ""
         },
         2: {
-          functionString: "add",
-          arg1: "x",
-          arg2: "z"
+          functionString: "",
+          arg1: "",
+          arg2: ""
         },
         3: {
-          functionString: "subtract",
-          arg1: "y",
-          arg2: 2
+          functionString: "",
+          arg1: "",
+          arg2: ""
         },
         4: {
-          functionString: "set",
-          arg1: "x",
-          arg2: 3
+          functionString: "",
+          arg1: "",
+          arg2: ""
         },
         5: {
-          functionString: "print",
-          arg1: "y",
-          arg2: 2
+          functionString: "",
+          arg1: "",
+          arg2: ""
         },
         currSelectedField: -1,
         currSelectedRow: 1
@@ -167,7 +173,8 @@ export default {
     };
   },
   components: {
-    GameRow
+    GameRow,
+    DocsPanel
   },
   // Key down event handler
   created() {
@@ -323,41 +330,49 @@ export default {
       // Change this.fieldStates[row].function = "function-unselected"
     },
     checkArg1(row, inputString) {
+
+      let varRegEx = /x|y|z/;
       // Gray
-      if (this.possibleArg1String.includes(this.input[row].arg1)) {
-        this.fieldStates[row].agr1 = "argument-unselected";
+      if(inputString.match(varRegEx)){
+        this.fieldStates[row].arg1 = "argument-unselected";
       } else {
         // Red
         this.fieldStates[row].arg1 = "argument-invalid-syntax";
+        return;
       }
 
       // Yellow
-      if (this.currExpression.arg1List.includes(this.input[row].arg1)) {
+      if(this.currExpression.arg1List.includes(inputString)) {
         this.fieldStates[row].arg1 = "argument-different-spot";
       }
 
       // Green
       if (this.currExpression[row].arg1 == inputString) {
-        this.fieldStates[row].arg1 = "argument-correct";
+        this.fieldStates[row].arg1 = "argument-correct"; 
       }
     },
+
     checkArg2(row, inputString) {
-      // Gray
-      if (this.possibleArg2String.includes(this.input[row].arg2)) {
+
+      let notNumberRegEx = /[a-z]/;
+      let numberRegEx = /\d+/;
+
+      // Gray 
+      if(!inputString.match(notNumberRegEx) && inputString.match(numberRegEx)){
         this.fieldStates[row].arg2 = "argument-unselected";
       } else {
+        // Red
         this.fieldStates[row].arg2 = "argument-invalid-syntax";
+        return;
       }
 
       // Yellow
-      if (this.currExpression.arg2List.includes(this.input[row].arg2)) {
+      if(this.currExpression.arg2List.includes(inputString)){
         this.fieldStates[row].arg2 = "argument-different-spot";
-      } else {
-        this.fieldStates[row].arg2 = "argument-invalid-syntax";
       }
 
       // Green
-      if (this.currExpression[row].arg2 == inputString) {
+      if(this.currExpression[row].arg2 == inputString){
         this.fieldStates[row].arg2 = "argument-correct";
       }
     },
@@ -433,7 +448,9 @@ export default {
             console.log("default");
         }
 
-        console.log(this.input["x"], this.input["y"], this.input["z"]);
+        this.input.x = this.input.static_x;
+        this.input.y = this.input.static_y;
+        this.input.z = this.input.static_z;
       });
 
       return result;

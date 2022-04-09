@@ -1,4 +1,5 @@
-Functionality
+Documentation
+
 Multiple rows
 	Only able to edit/select current row
 	Submit advances to next row
