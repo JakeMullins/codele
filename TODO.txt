@@ -1,4 +1,10 @@
-Documentation
+Make sure that space bars aren't checked
+
+Minimize docs
+
+Add technical details section of docs
+
+Add some way to view old entries
 
 Multiple rows
 	Only able to edit/select current row
@@ -7,5 +13,3 @@ Control backspace to delete whole string
 Interpreter
 
 Make multiple tests
-
-Either dynamically change list of valid entries specifice to each expression or find some other mechanism that doesn't involve hardcoding

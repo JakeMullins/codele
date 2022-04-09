@@ -8,6 +8,9 @@
         <div id="documentation"></div>
         <div id="board" style="width: 700px; height: 420px">
           <!--Dynamically assign row strings based on keyboard inputs-->
+          <DocsPanel 
+            v-bind:toggled="helpToggled"
+          />
           <GameRow
             :rowId="1"
             v-bind:correct="currExpression"
@@ -17,7 +20,6 @@
             @fieldSelected="changeSelected($event)"
             @guessSubmitted="guessSubmitted(1)"
           />
-          <DocsPanel />
         </div>
       </div>
     </div>
@@ -34,6 +36,7 @@ export default {
   name: "GameView",
   data: function () {
     return {
+      helpToggled: true,
       rows: [1, 2, 3, 4, 5],
       currExpression: {
         '1': { functionString: 'print', arg1: 'x', arg2: 2 },
