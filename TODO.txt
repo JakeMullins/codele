@@ -1,8 +1,10 @@
 Make sure that space bars aren't checked
 
+How do I read mongoose queries? Should I only return one instead of all?
+
 Minimize docs
 
-Add technical details section of docs
+Get https working
 
 Add some way to view old entries
 
@@ -10,6 +12,3 @@ Multiple rows
 	Only able to edit/select current row
 	Submit advances to next row
 Control backspace to delete whole string
-Interpreter
-
-Make multiple tests

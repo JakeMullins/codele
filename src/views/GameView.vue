@@ -468,6 +468,10 @@ export default {
   justify-content: center;
 }
 
+#game-container{ 
+  max-width: 50vw;
+}
+
 #game-row {
   display: grid;
 }
