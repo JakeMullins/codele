@@ -142,6 +142,9 @@
 <script>
 export default {
   name: "GameRow",
+  created() {
+    console.log(this.$props.correct);
+  },
   // Put data here
   props: {
     correct: Object,

@@ -32,9 +32,6 @@
                 <code>subtract</code>: <code>arg2</code> is subtracted from <code>arg1</code>
             </li>
             <li>
-                <code>divide</code>: <code>arg1</code> is divided by <code>arg2</code>
-            </li>
-            <li>
                 <code>print</code>: <code>arg1</code> is printed <code>arg2</code> times
             </li>
 
@@ -46,7 +43,7 @@
         <p>
             - A red box means that the <code>input</code> is invalid. Make sure that any function names are spelled correctly.
         </p>
-        <div class="function-invalid-syntax">print</div>
+        <div class="function-invalid-syntax">prnt</div>
         <p>
             - A green box means that the <code>input</code> is in the correct spot and valid.
         </p>
@@ -82,6 +79,7 @@
     }
     li {
         text-align: left;
+        font-size: 25px;
     }
 
     .function-unselected {
@@ -201,7 +199,7 @@ export default {
   props: {
     toggled: Boolean
   },
-  method: {
+  methods: {
     toggle() {
         this.$emit()
     }

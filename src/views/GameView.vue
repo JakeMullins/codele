@@ -7,10 +7,10 @@
       <div id="board-container">
         <div id="documentation"></div>
         <div id="board" style="width: 700px; height: 420px">
-          <!--Dynamically assign row strings based on keyboard inputs-->
-          <DocsPanel 
-            v-bind:toggled="helpToggled"
+          <DocsPanel
+            v-bind:toggled="true"
           />
+          <!--Dynamically assign row strings based on keyboard inputs-->
           <GameRow
             :rowId="1"
             v-bind:correct="currExpression"
@@ -40,26 +40,25 @@ export default {
       rows: [1, 2, 3, 4, 5],
       currExpression: {
         '1': { functionString: 'print', arg1: 'x', arg2: 2 },
-        '2': { functionString: 'add', arg1: 'x', arg2: 'z' },
-        '3': { functionString: 'subtract', arg1: 'y', arg2: 2 },
-        '4': { functionString: 'set', arg1: 'x', arg2: 3 },
-        '5': { functionString: 'print', arg1: 'y', arg2: 2 },
-        // dynamic vs static 
-        x: 2,
-        y: 3,
-        z: 4,
-        functionList: [ 'print', 'add', 'subtract', 'set' ],
-        arg1List: [ '1', 'x', 'y' ],
-        arg2List: [ '2', '5', '4' ],
-        result: '2 555'
+        '2': { functionString: 'add', arg1: 'x', arg2: 3 },
+        '3': { functionString: 'subtract', arg1: 'y', arg2: 1 },
+        '4': { functionString: 'multiply', arg1: 'x', arg2: 'y' },
+        '5': { functionString: 'print', arg1: 'x', arg2: 3 },
+        x: '1',
+        y: '3',
+        z: '3',
+        functionList: [ 'print', 'add', 'subtract', 'multiply' ],
+        arg1List: [ 'x', 'y' ],
+        arg2List: [ '1', '2', '3', 'y' ],
+        result: '11 888'
       },
       input: {
-        static_x: 2,
-        x: 2,
+        static_x: 1,
+        x: 1,
         static_y: 3,
         y: 3,
-        static_z: 4,
-        z: 4,
+        static_z: 3,
+        z: 3,
         1: {
           functionString: "",
           arg1: "",
@@ -198,19 +197,25 @@ export default {
       }
     });
   
-    this.getExpression();
+    // this.getExpression();
   },
   methods: {
     async getExpression(){
       try{
-        console.log("Attempting connection")
         let response = await axios.get('http://localhost:3000/api/expression');
-        console.log(response);
-        this.currExpression = response.data;
+        this.currExpression = response;
         return true;
       } catch(e) {
         console.log(e);
       }
+    },
+    chooseExpression(expressionRes) {
+      let length = expressionRes.data.length;
+      let min = 0;
+      let max = length;
+      let i = Math.floor(Math.random() * (max - min + 1)) + min;
+  
+      return expressionRes.data[i];
     },
     // Called when a field is clicked
     changeSelected(field) {
@@ -354,14 +359,14 @@ export default {
         this.fieldStates[row].arg1 = "argument-correct"; 
       }
     },
-
     checkArg2(row, inputString) {
 
-      let notNumberRegEx = /[a-z]/;
+      let notNumberRegEx = /[a-w]/;
+      let varRegEx = /[x-z]/;
       let numberRegEx = /\d+/;
 
       // Gray 
-      if(!inputString.match(notNumberRegEx) && inputString.match(numberRegEx)){
+      if(!inputString.match(notNumberRegEx) && (inputString.match(numberRegEx) || inputString.match(varRegEx))) {
         this.fieldStates[row].arg2 = "argument-unselected";
       } else {
         // Red
@@ -393,6 +398,15 @@ export default {
     },
     // Called in checkGuess
     interpret() {
+
+      this.input["x"] = this.input["static_x"];
+      // this.input[y] = this.input[static_y];
+      // this.input[z] = this.input[static_z];
+
+      // let notNumberRegEx = /[a-w]/;
+      // let varRegEx = /[x-z]/;
+      // let numberRegEx = /\d+/;
+
       let result = "";
 
       this.rows.forEach((row) => {
@@ -401,7 +415,9 @@ export default {
         // let func = this.input[row].functionString;
 
         // let arg1IsNumber = arg1 == "x" || arg1 == "y" || arg1 == "z";
-        let arg2IsNumber = arg2 == "x" || arg2 == "y" || arg2 == "z";
+        let arg2IsNumber = arg2 == 1 || arg2 == 2 || arg2 == 3 || arg2 == 4|| arg2 == 5|| arg2 == 6|| arg2 == 7 || arg2 == 8 || arg2 == 9 || arg2 == 10;
+        let arg2IsVar = arg2 == "x" || arg2 == "y" || arg2 == "z";
+        // let arg2IsInvalid = arg2.match(notNumberRegEx);
 
         // 'Execute' each function
         switch (this.input[row].functionString) {
@@ -413,35 +429,35 @@ export default {
             result += " ";
             break;
           case "add":
-            if (arg2IsNumber) {
-              this.input[this.input[row].arg1] +=
-                this.input[this.input[row].arg2];
-            } else {
-              this.input[this.input[row].arg1] += this.input[row].arg2;
+            if (arg2IsVar) {
+              this.input[this.input[row].arg1] += parseInt(this.input[this.input[row].arg2]);
+            } 
+            else if(arg2IsNumber){
+              this.input[this.input[row].arg1] += parseInt(this.input[row].arg2);
             }
             break;
           case "subtract":
-            if (arg2IsNumber) {
-              this.input[this.input[row].arg1] -=
-                this.input[this.input[row].arg2];
-            } else {
-              this.input[this.input[row].arg1] -= this.input[row].arg2;
+            if (arg2IsVar) {
+              this.input[this.input[row].arg1] -= parseInt(this.input[this.input[row].arg2]);
+            } 
+            else if(arg2IsNumber){
+              this.input[this.input[row].arg1] -= parseInt(this.input[row].arg2);
             }
             break;
           case "multiply":
-            if (arg2IsNumber) {
-              this.input[this.input[row].arg1] *=
-                this.input[this.input[row].arg2];
-            } else {
-              this.input[this.input[row].arg1] *= this.input[row].arg2;
+            if (arg2IsVar) {
+              this.input[this.input[row].arg1] *= parseInt(this.input[this.input[row].arg2]);
+            } 
+            else if(arg2IsNumber){
+              this.input[this.input[row].arg1] *= parseInt(this.input[row].arg2);
             }
             break;
           case "divide":
-            if (arg2IsNumber) {
-              this.input[this.input[row].arg1] /=
-                this.input[this.input[row].arg2];
-            } else {
-              this.input[this.input[row].arg1] /= this.input[row].arg2;
+            if (arg2IsVar) {
+              this.input[this.input[row].arg1] /= parseInt(this.input[this.input[row].arg2]);
+            } 
+            else if(arg2IsNumber){
+              this.input[this.input[row].arg1] /= parseInt(this.input[row].arg2);
             }
             break;
           case "set":
@@ -450,10 +466,6 @@ export default {
           default:
             console.log("default");
         }
-
-        this.input.x = this.input.static_x;
-        this.input.y = this.input.static_y;
-        this.input.z = this.input.static_z;
       });
 
       return result;

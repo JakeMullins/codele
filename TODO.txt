@@ -12,3 +12,5 @@ Multiple rows
 	Only able to edit/select current row
 	Submit advances to next row
 Control backspace to delete whole string
+
+Divide function working
