@@ -1,9 +1,6 @@
-//
-
 <template>
   <div class="docs">
     <div id="toggle" @click="toggle()">
-        Help
     </div>
     <div id="info" v-if="this.$props.toggled === true">
         <h1>
@@ -14,6 +11,9 @@
         </p>
         <p>
             Programming is the discipline of knowing the start conditions and the end conditions, and figuring out the steps in between in such a way that a computer can execute them. <code>Codele</code> brings the satisfaction of developing a bug free program without the soul-draining effort of actually learning how to <code>code</code>.
+        </p>
+        <p>
+          In <code>Codele</code>, you will master the hottest new <code>language</code>, <code>C♭</code>. <code>C♭</code> is an esoteric <code>language</code> written by some guy named Lee. You will write a <code>C♭ program</code> in order to match the output given below. 
         </p>
         <p>
             Columns 1 is for <code>function</code> syntax. Columns 2 and 3 are for <code>arguments</code>.
@@ -30,8 +30,7 @@
             </li>
             <li>
                 <code>subtract</code>: <code>arg2</code> is subtracted from <code>arg1</code>
-            </li>
-            <li>
+            </li>            <li>
                 <code>print</code>: <code>arg1</code> is printed <code>arg2</code> times
             </li>
 

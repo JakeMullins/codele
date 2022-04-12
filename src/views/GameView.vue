@@ -6,12 +6,17 @@
       </div>
       <div id="board-container">
         <div id="documentation"></div>
-        <div id="board" style="width: 700px; height: 420px">
+        <div id="board" style="max-width: 700px; height: 420px">
+          <button @click="startGame()" class="button-unpressed" v-if="gameStarted === false">Start</button>
           <DocsPanel
+            v-if="helpToggled && gameStarted"
             v-bind:toggled="true"
           />
+          <button @click="helpToggle()" v-if="helpToggled === true && gameStarted === true" class="button-unpressed" id="docsButton">Close docs</button>
+          <button @click="helpToggle()" v-if="helpToggled === false && gameStarted === true" class="button-unpressed" id="docsButton">Open docs</button>
           <!--Dynamically assign row strings based on keyboard inputs-->
           <GameRow
+            v-if="gameStarted" 
             :rowId="1"
             v-bind:correct="currExpression"
             v-bind:input="input"
@@ -36,6 +41,7 @@ export default {
   name: "GameView",
   data: function () {
     return {
+      gameStarted: false,
       helpToggled: true,
       rows: [1, 2, 3, 4, 5],
       currExpression: {
@@ -197,13 +203,20 @@ export default {
       }
     });
   
-    // this.getExpression();
+    this.getExpression();
   },
   methods: {
+    helpToggle(){
+      this.helpToggled = this.helpToggled ? false : true;
+    },
+    startGame(){
+      this.gameStarted = true;
+    },
     async getExpression(){
       try{
         let response = await axios.get('http://localhost:3000/api/expression');
-        this.currExpression = response;
+        // this.currExpression = response;
+        console.log(response);
         return true;
       } catch(e) {
         console.log(e);
@@ -288,17 +301,30 @@ export default {
     checkGuess() {
       this.changeAllFieldsUnselected();
 
+      let runningTotal = 0;
+
       let guessRows = [1, 2, 3, 4, 5];
 
       // Change field colors
       guessRows.forEach((row) => {
-        this.checkFunction(row, this.input[row].functionString);
-        this.checkArg1(row, this.input[row].arg1);
-        this.checkArg2(row, this.input[row].arg2);
+        if(this.checkFunction(row, this.input[row].functionString)){
+          runningTotal++;
+        }
+        if(this.checkArg1(row, this.input[row].arg1)){
+          runningTotal++;
+        }
+        if(this.checkArg2(row, this.input[row].arg2)) {
+          runningTotal++;
+        }
       });
+      
+      console.log(runningTotal);
 
       // Run interpreter
-      this.result = this.interpret();
+      if(runningTotal == 15){
+        console.log("Won!");
+         this.win();
+      }
     },
     checkFunction(row, inputString) {
       // Gray
@@ -329,6 +355,7 @@ export default {
       if (this.currExpression[row].functionString === inputString) {
         // Change this.fieldStates[row].function = "function-correct"
         this.fieldStates[row].function = "function-correct";
+        return true;
       }
 
       // Check if inputString is not a valid entry
@@ -357,6 +384,7 @@ export default {
       // Green
       if (this.currExpression[row].arg1 == inputString) {
         this.fieldStates[row].arg1 = "argument-correct"; 
+        return true;
       }
     },
     checkArg2(row, inputString) {
@@ -382,7 +410,11 @@ export default {
       // Green
       if(this.currExpression[row].arg2 == inputString){
         this.fieldStates[row].arg2 = "argument-correct";
+        return true;
       }
+    },
+    win(){
+      console.log("WOOH");
     },
     changeAllFieldsUnselected() {
       for (const row in this.fieldStates) {
@@ -475,6 +507,36 @@ export default {
 </script>
 
 <style scoped>
+button {
+  vertical-align: middle;
+}
+
+#docsButton {
+  font-size: 40px;
+}
+
+.button-unpressed {
+  display: inline-block;
+  width: 280px;
+  height: 100px;
+  background-color: #2b2b2b;
+  color: #fff;
+  margin: 5px;
+  font-size: 75px;
+  vertical-align: middle;
+}
+
+.button-pressed {
+  display: inline-block;
+  width: 280px;
+  height: 100px;
+  background-color: #5b5b5b;
+  color: #fff;
+  margin: 5px;
+  font-size: 75px;
+  vertical-align: middle;
+}
+
 #board-container {
   display: flex;
   justify-content: center;

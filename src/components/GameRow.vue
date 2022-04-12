@@ -134,7 +134,6 @@
       </button>
      <div class="result" id="user">{{ interpretedString }}</div>
      <div class="result" id="answer">{{ correct.result }}</div>
-     <hr>
     </div>
   </div>
 </template>
@@ -258,18 +257,19 @@ p {
   display: inline-block;
   color: #fff;
   margin: 5px;
-  font-size: 75px;
+  font-size: 60px;
   vertical-align: middle;
 }
 
 .initialValue {
+  padding: 5px 0px 0px 0px;
   display: inline-block;
-  width: 100px;
-  height: 100px;
+  width: 85px;
+  height: 85px;
   background-color: #2b2b2b;
   color: #fff;
   margin: 5px;
-  font-size: 75px;
+  font-size: 60px;
   vertical-align: middle;
 }
 
@@ -286,7 +286,7 @@ p {
 .result {
   display: inline-block;
   width: 520px;
-  height: 100px;
+  height: 80px;
   background-color: #2b2b2b;
   color: #fff;
   margin: 5px;
@@ -297,7 +297,7 @@ p {
 .function-unselected {
   display: inline-block;
   width: 300px;
-  height: 100px;
+  height: 90px;
   background-color: #2b2b2b;
   color: #fff;
   margin: 5px;
@@ -308,7 +308,7 @@ p {
 .function-selected {
   display: inline-block;
   width: 300px;
-  height: 100px;
+  height: 90px;
   background-color: #fff;
   color: #2b2b2b;
   margin: 5px;
@@ -319,7 +319,7 @@ p {
 .function-correct {
   display: inline-block;
   width: 300px;
-  height: 100px;
+  height: 90px;
   background-color: #538d4e;
   color: #2b2b2b;
   margin: 5px;
@@ -330,7 +330,7 @@ p {
 .function-different-spot {
   display: inline-block;
   width: 300px;
-  height: 100px;
+  height: 90px;
   background-color: #b59f3b;
   color: #2b2b2b;
   margin: 5px;
@@ -341,7 +341,7 @@ p {
 .function-invalid-syntax {
   display: inline-block;
   width: 300px;
-  height: 100px;
+  height: 90px;
   background-color: #f44646;
   color: #2b2b2b;
   margin: 5px;
@@ -352,7 +352,7 @@ p {
 .argument-unselected {
   display: inline-block;
   width: 100px;
-  height: 100px;
+  height: 90px;
   background-color: #2b2b2b;
   color: #fff;
   margin: 5px;
@@ -363,7 +363,7 @@ p {
 .argument-selected {
   display: inline-block;
   width: 100px;
-  height: 100px;
+  height: 90px;
   background-color: #fff;
   color: #2b2b2b;
   margin: 5px;
@@ -374,7 +374,7 @@ p {
 .argument-correct {
   display: inline-block;
   width: 100px;
-  height: 100px;
+  height: 90px;
   background-color: #538d4e;
   color: #2b2b2b;
   margin: 5px;
@@ -385,7 +385,7 @@ p {
 .argument-different-spot {
   display: inline-block;
   width: 100px;
-  height: 100px;
+  height: 90px;
   background-color: #b59f3b;
   color: #2b2b2b;
   margin: 5px;
@@ -396,7 +396,7 @@ p {
 .argument-invalid-syntax {
   display: inline-block;
   width: 100px;
-  height: 100px;
+  height: 90px;
   background-color: #f44646;
   color: #2b2b2b;
   margin: 5px;
